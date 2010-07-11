@@ -254,6 +254,24 @@ class MQ
     # message stays in memory and is never persisted to non-volatile (slow)
     # storage.
     #
+    # The following standard AMQP header values can also be set as options:
+    #   :content_type         (default application/octet-stream)
+    #   :delivery_mode        (set using :persistent)
+    #   :priority
+    #   :reply_to
+    #   :content_encoding
+    #   :application_headers
+    #   :priority             (default 0)
+    #   :correlation_id
+    #   :reply_to
+    #   :expiration
+    #   :message_id
+    #   :timestamp
+    #   :type
+    #   :user_id
+    #   :app_id
+    #   :cluster_id
+    #
     def publish data, opts = {}
       @mq.callback{
         out = []
@@ -263,11 +281,26 @@ class MQ
 
         data = data.to_s
 
+        headers =  { 
+          :content_type => 'application/octet-stream',
+          :delivery_mode => (opts[:persistent] ? 2 : 1),
+          :priority => 0,
+          :reply_to => nil,
+          :content_encoding => nil,
+          :application_headers => nil,
+          :priority => nil,
+          :correlation_id => nil,
+          :reply_to => nil,
+          :expiration => nil,
+          :message_id => nil,
+          :timestamp => nil,
+          :type => nil,
+          :user_id => nil,
+          :app_id => nil,
+          :cluster_id => nil }.merge(opts).delete_if {|key, value| value == nil }
         out << Protocol::Header.new(Protocol::Basic,
-                                    data.length, { :content_type => 'application/octet-stream',
-                                                   :delivery_mode => (opts[:persistent] ? 2 : 1),
-                                                   :priority => 0 }.merge(opts))
-
+                                    data.length,
+                                    headers)
         out << Frame::Body.new(data)
 
         @mq.send *out
