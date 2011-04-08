@@ -1,0 +1,5 @@
+ruby-amqp (0.7.0-1) UNRELEASED; urgency=low
+
+  * Initial release
+
+ -- David Greaves <david@ash.dgreaves.com>  Fri, 08 Apr 2011 13:30:07 +0100
