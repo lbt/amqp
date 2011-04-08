@@ -17,3 +17,8 @@ export DH_RUBY_IGNORE_TESTS=require-rubygems
 
 %:
 	dh $@ --buildsystem=ruby --with ruby
+
+override_dh_auto_install:
+	mv bin/irb bin/irb-amqp
+	dh_auto_install
+	mv bin/irb-amqp bin/irb
