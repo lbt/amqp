@@ -1,5 +1,8 @@
-ruby-amqp (0.7.0-1) UNRELEASED; urgency=low
+ruby-amqp (0.7.0-1) testing; urgency=low
 
-  * Initial release
-
+  * Initial debianisation from gem2deb
+  * debian Use new DH_RUBY_GEMSPEC variable to build correct gemspec
+  * Add spec file
+  * undo the amqp override of bin/irb
+  
  -- David Greaves <david@ash.dgreaves.com>  Fri, 08 Apr 2011 13:30:07 +0100
